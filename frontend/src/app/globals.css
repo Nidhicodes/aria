@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    background: #0a0908;
+    color: #ece7df;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: var(--font-body), system-ui, sans-serif;
+    line-height: 1.65;
+  }
+
+  /* Tabular, slightly larger numerals in data contexts. */
+  .font-mono {
+    font-feature-settings: "tnum" 1, "zero" 1;
+  }
+}
+
+@layer utilities {
+  /* The void texture — barely-there warm grain over the deepest layer. */
+  .bg-void-grain {
+    background-color: #0a0908;
+  }
+
+  /* Hairline divider that draws in from the left. */
+  .rule-draw {
+    transform-origin: left center;
+  }
+
+  /* The phosphor bloom on the active reasoning line. */
+  .phosphor {
+    text-shadow:
+      0 0 1px rgba(214, 160, 82, 0.45),
+      0 0 14px rgba(214, 160, 82, 0.12);
+  }
+
+  /* Letterpress weight for the display serif at hero sizes. */
+  .display-hero {
+    font-family: var(--font-display), Georgia, serif;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    font-weight: 800;
+  }
+  .display-title {
+    font-family: var(--font-display), Georgia, serif;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .label-caps {
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Liquid-rise button fill. */
+  .btn-rise {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .btn-rise::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: currentColor;
+    transform: translateY(100%);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: -1;
+  }
+  .btn-rise:hover::before {
+    transform: translateY(0);
+  }
+}
+
+/* Scrollbars — nearly invisible. */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2622;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Focus ring — amber, offset. */
+:focus-visible {
+  outline: 2px solid #d6a052;
+  outline-offset: 2px;
+}
+
+/* Respect reduced motion: kill all non-essential animation. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
