@@ -29,9 +29,7 @@ from .incident import (
     ReasoningStep,
     RemediationAction,
     RootCause,
-    Severity,
     Signal,
-    SignalSource,
     StreamEvent,
 )
 from .prompts import CORRELATION_JSON_REQUEST, REASONER_INSTRUCTION, REPORT_REQUEST
@@ -302,30 +300,18 @@ class IncidentEngine:
 
     # ── reasoning backends ──────────────────────────────────────────────
     async def _collect_live_signals(self) -> list[Signal]:
-        """Pull real signals from the partner MCP servers. Returns [] on failure."""
-        try:
-            from .agents.runner import collect_live_signals
+        """Pull real signals from the partner systems.
 
-            text = await collect_live_signals(self.settings)
-            data = self.gemini.extract_json(text)
-            out: list[Signal] = []
-            for raw in data.get("signals", []):
-                try:
-                    out.append(
-                        Signal(
-                            source=SignalSource(raw["source"]),
-                            name=str(raw.get("name", "signal")),
-                            value=float(raw.get("value", 0)),
-                            unit=str(raw.get("unit", "")),
-                            severity=Severity(raw.get("severity", "info")),
-                            detail=str(raw.get("detail", "")),
-                            entity=str(raw.get("entity", "")),
-                        )
-                    )
-                except (KeyError, ValueError):
-                    continue
-            return out
-        except Exception:  # noqa: BLE001 - fall back to scenario fixture
+        Uses direct HTTP queries (fast, reliable) rather than the ADK/MCP path
+        (which requires spawning processes and browser OAuth). Falls back to []
+        on any failure so the engine uses the scenario fixture.
+        """
+        try:
+            from .tools.live_signals import fetch_all_live_signals
+
+            signals = await fetch_all_live_signals(self.settings)
+            return signals if signals else []
+        except Exception:  # noqa: BLE001
             return []
 
     async def _diagnose(self, incident: Incident, scenario: scenarios.Scenario) -> dict:
