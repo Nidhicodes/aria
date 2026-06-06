@@ -5,15 +5,14 @@
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache_2.0-blue.svg)](LICENSE)
 [![Gemini](https://img.shields.io/badge/Gemini-Google_ADK-8E75FF)](https://google.github.io/adk-docs/)
 [![MCP](https://img.shields.io/badge/MCP-Dynatrace_+_Arize-d6a052)](https://modelcontextprotocol.io)
-[![Built for](https://img.shields.io/badge/Google_Cloud-Rapid_Agent_Hackathon-34A853)](https://rapid-agent.devpost.com/)
 
 **Autonomous Reasoning & Incident Agent**
 
-*One agent. It watches your infrastructure and your AI model at the same time — and finds the incidents that live in the gap between them.*
+<img width="1509" height="783" alt="Screenshot 2026-06-06 at 3 31 19 PM" src="https://github.com/user-attachments/assets/df420c2c-4bce-4728-b610-6fba92756e9d" />
 
-[Live demo](https://aria-three-lac.vercel.app/) · [3-min video](#) · [Source](https://github.com/Nidhicodes/aria)
+*One agent. It watches your infrastructure and your AI model at the same time and finds the incidents that live in the gap between them.*
 
-![ARIA reasoning chain](https://github.com/Nidhicodes/aria/blob/main/assets/reasoning.gif?raw=true)
+[Live demo](https://aria-three-lac.vercel.app/) · [3-min video](https://youtu.be/odIU07C-jfY) · [Source](https://github.com/Nidhicodes/aria)
 
 </div>
 
@@ -35,7 +34,7 @@ And the nastiest production incidents live *exactly* in that gap:
 > A memory leak on a pod quietly forces the prompt-assembly buffer to evict context. The model
 > starts receiving **truncated prompts**. With half its context gone, it hallucinates. The infra
 > team sees "memory high." The ML team sees "model degraded." **Neither sees the causal chain
-> connecting them** — because no human is watching both layers at once.
+> connecting them** because no human is watching both layers at once.
 
 So there are two ways to close that gap:
 
@@ -65,8 +64,6 @@ Anomaly fires (infra OR model)
 The defining beat: **a single incident that touches both layers.** ARIA connects memory pressure
 (Dynatrace) → prompt truncation → hallucination rate climbing (Arize) in seconds. No human would
 have caught the link that fast.
-
-![ARIA dashboard — dual oracles and reasoning](https://github.com/Nidhicodes/aria/blob/main/assets/dashboard.png?raw=true)
 
 ---
 
@@ -253,8 +250,6 @@ Everything else — the typography, the living background, the confidence gauge 
 thing land: **watching ARIA reason should feel like having a calm, sharp colleague think out loud
 under pressure.**
 
-![Reasoning chain close-up](https://github.com/Nidhicodes/aria/blob/main/assets/reasoning-closeup.png?raw=true)
-
 The chain renders phase by phase — `PULLING → CORRELATING → CONCLUSION` — typing character by
 character with a blinking cursor, because incident response *is* a thought process and the UI
 should show it as one. The `CONCLUSION` line is styled differently and the confidence score counts
@@ -342,29 +337,8 @@ real tool calls:
 
 Destructive actions stay behind the `NEEDS_APPROVAL` gate — the operator must click before they run.
 
-### Deployment
-
-The hosted demo uses:
-- **Backend**: [Render.com](https://render.com) free tier → `pip install .` + `uvicorn aria.server:app`
-- **Frontend**: [Vercel](https://vercel.com) free tier → root directory `frontend`, env var `NEXT_PUBLIC_ARIA_API`
-
 For production: Cloud Run with service-account tokens (no browser OAuth), both partner MCP servers
 running headlessly with platform tokens.
-
----
-
-## The honest part
-
-A few things stated plainly, because hand-wavy demos are worse than honest ones:
-
-- **Remediation is simulated by default.** A hackathon demo should never actually roll back your
-  production. `execute_action` is the single choke-point to wire to real tools (`send_event`,
-  `send_slack_message`, your deploy webhook) — kept behind the approval gate.
-- **The hosted demo runs in demo mode.** Browser-OAuth and a local Phoenix don't fit a headless
-  free-tier container. The reasoning is real Gemini; the signals are the scenario fixture. The
-  *video* shows the full live integration against real Dynatrace + real Phoenix traces.
-- **Dynatrace live reads depend on your environment having data.** A fresh trial may legitimately
-  report "no active problems" — which is ARIA correctly telling you your infra is healthy.
 
 ---
 
