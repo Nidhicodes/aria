@@ -151,7 +151,7 @@ A handful of engineering decisions are the difference between a slick demo and s
   process; the UI treats it like one.
 - **The approval gate is architectural, not cosmetic.** A `NEEDS_APPROVAL` action blocks on an
   `asyncio.Event` until a human calls `/approve`. The agent literally cannot execute a risky fix
-  without you. That's the hackathon's "keep the human in control" requirement, enforced in code.
+  without you.
 - **Graceful degradation, never a hard fail.** Live MCP → direct HTTP query → scripted fallback.
   If Gemini rate-limits or a token expires, ARIA still runs and still reasons. The product never
   shows the user a stack trace.
@@ -184,7 +184,7 @@ it runs in demo mode out of the box, and lights up fully when you add keys.
 
 ---
 
-## Demo vs Live: same agent, different lenses
+## Live mode: same agent, different lenses
 
 ARIA runs the **identical pipeline** either way. The only thing that changes is where signals come
 from and what drives reasoning:
@@ -196,8 +196,7 @@ from and what drives reasoning:
 | Reasoning | real Gemini if keyed, else scripted | Gemini via Google ADK, both MCP toolsets attached |
 | Setup | nothing | `.env` + `ARIA_MODE=live` |
 
-Demo mode exists so the project always runs — for the video, for a clone, for a judge with no
-accounts. Live mode is the real thing. Flip one env var; nothing else changes.
+Flip one env var; nothing else changes.
 
 ### Enabling live mode
 
