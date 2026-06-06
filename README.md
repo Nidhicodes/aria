@@ -12,7 +12,7 @@
 
 *One agent. It watches your infrastructure and your AI model at the same time and finds the incidents that live in the gap between them.*
 
-[Live demo](https://aria-three-lac.vercel.app/) · [3-min video](https://youtu.be/odIU07C-jfY) · [Source](https://github.com/Nidhicodes/aria)
+[Live demo](https://aria-three-lac.vercel.app/) · [Video](https://youtu.be/odIU07C-jfY) · [Source](https://github.com/Nidhicodes/aria)
 
 </div>
 
