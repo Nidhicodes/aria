@@ -54,12 +54,15 @@ class Settings(BaseSettings):
     # ── Server ──────────────────────────────────────────────────────────
     aria_host: str = "0.0.0.0"
     aria_port: int = 8000
-    aria_cors_origins: str = "http://localhost:3000"
+    aria_cors_origins: str = "*"
 
     # ── Derived helpers ─────────────────────────────────────────────────
     @property
     def cors_origins(self) -> list[str]:
-        return [o.strip() for o in self.aria_cors_origins.split(",") if o.strip()]
+        raw = self.aria_cors_origins.strip()
+        if raw == "*":
+            return ["*"]
+        return [o.strip() for o in raw.split(",") if o.strip()]
 
     @property
     def has_gemini(self) -> bool:
